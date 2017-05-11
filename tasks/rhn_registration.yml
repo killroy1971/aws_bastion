@@ -1,0 +1,19 @@
+---
+# Pull SKU from available subscription pool 
+- name: BASTION | rhn_registration | Search for available OpenShift subscription
+  shell: /usr/bin/subscription-manager list --all --available --matches="*OpenShift*" | awk '/Pool ID/ {print $3}' | head -1
+  tags:
+    - rhn
+  register: pool_id_ansible
+  ignore_errors: yes
+  when: deploy_ansible
+
+- name: BASTION | rhn_registration | Attach machine to Pool ID
+  command: /usr/bin/subscription-manager attach --pool={{ pool_id_ansible.stdout }}
+  register: task_result
+  until: task_result.rc == 0
+  retries: 10
+  delay: 1
+  ignore_errors: no
+  when: deploy_openshift
+

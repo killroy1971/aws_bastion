@@ -1,0 +1,13 @@
+---
+# Register an Ansible node to Satellite
+- name: BASTION | satellite registration | Install the Satellite SSL keys
+  yum:
+    name: '{{ sat_url }}'
+    state: present
+
+- name: BASTION | satellite registration | Register an Ansible Node
+  redhat_subscription:
+    activationkey: '{{ sat_activation_key }}'
+    org_id: '{{ sat_organization }}'
+    autosubscribe: true
+  when: deploy_ansible

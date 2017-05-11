@@ -1,0 +1,29 @@
+---
+- name: BASTION | install_software | Install katello-agent if use_satellite == true
+  yum:
+    name: katello-agent
+    state: present
+  when: use_satellite
+
+- name: BASTION | install_software | Activate katello-agent "goferd" if use_satellite == true
+  systemd:
+    name: goferd
+    state: started
+    enabled: true
+  when: use_satellite
+
+- name: BASTION | install_software | Install common package set
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ common_package_list }}"
+
+- name: BASTION | install_software | Install pre-requisite packages (Ansible)
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ openshift_package_list }}"
+  when: deploy_ansible
+
