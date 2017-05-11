@@ -1,0 +1,6 @@
+---
+- name: ANSIBLE | Clone git repositories
+  git: 
+    repo: '{{ item.repo }}'
+    dest: '{{ item.destination }}'
+  with_items: '{{ git_repositories }}'

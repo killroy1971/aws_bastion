@@ -1,10 +1,15 @@
 ---
-- include: remove_rhui_repos.yml
-  when: remove_rhui_repos
-- include: epel7.yml
-  when: add_epel_repo
+- include: rhn_registration.yml
+  when: rhn_registration
 
-- include: install_packages.yml
-- include: ssh_config.yml
+- include: sat_registration.yml
+  when: use_satellite
+
+- include: packaes_and_configurations.yml
+- include: configure_repos.yml
 
 - include: aws_cli.yml
+
+- include: ssh_config.yml
+- include: clone_repository.yml
+  when: clone_repoistories

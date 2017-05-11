@@ -1,5 +1,5 @@
 ---
-- name: | BASTION | root ssh config | Create root's .ssh directory
+- name: | ANSIBLE | root ssh config | Create root's .ssh directory
   file:
     src: /root/.ssh
     owner: root
@@ -7,23 +7,20 @@
     mode: 0700
     state: directory
 
-- name: | BASTION | root ssh config | Copy AWS private key file into root/.ssh
+- name: | ANSIBLE | root ssh config | Copy AWS private key file into root/.ssh
   copy:
-    src: files/'{{ aws_private_key }}'
-    dest: /root/.ssh/'{{ aws_private_key }}'
+    src: '{{ aws_private_key }}'
+    dest: "/root/.ssh/{{ aws_private_key }}"
     owner: root
     group: root
     mode: 0600
 
-- name: | BASTION | root ssh config | Set up .ssh/config file
-  blockinfile:
-    block: |
-      Host '{{ item }}'
-        User '{{ aws_user }}'
-        IdentityFile /root/.ssh/'{{ aws_privare_key}}'
-    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item }}"
+- name: | ANSIBLE | root ssh config | Set up .ssh/config file
+  tempalte: 
+    src: ssh_config.j2
     dest: "/root/.ssh/config"
     owner: root
     group: root
     mode: 0600
   with_items: '{{ ssh_config_entries }}'
+

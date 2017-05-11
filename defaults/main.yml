@@ -1,11 +1,14 @@
 ---
-remove_rhui_repos: false
-add_epel_repo: false
+openshift_installer: false
+use_satellite: false
+rhn_registration: false
+clone_repositories: false
+
 awscli_pip: false
 awscli_yum: false
 awscli_bunder: false
 
-package_list:
+common_package_list:
   - libselinux-python
   - git
   - vim*
@@ -14,8 +17,10 @@ package_list:
   - unzip
   - bash-completion
 
-openshift_package:
+ansible_package_list:
   - ansible
+
+openshift_package_list:
   - atomic-openshift
 
 aws_private_key: redhat.pem
@@ -24,4 +29,11 @@ aws_user: ec2-user
 ssh_config_entries:
   - "*.aws-openshift.di2e.net"
   - "*.di2e.net"
+
+sat_url: 
+sat_activation_key: ocp-ansible
+sat_organization: DI2E
+
+git_repositories:
+  - { repo: 'ssh://git@bitbucket.di2e.net:7999/do/ansible_openshift.git', dest: '/root/ansible_openshift' }
 

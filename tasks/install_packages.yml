@@ -1,6 +1,0 @@
---
-- name: BASTION | install packages | Install required packages
-  yum:
-    name: '{{ item }}'
-    state: present
-  with_items: '{{ package_list }}'

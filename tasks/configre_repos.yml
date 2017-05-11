@@ -1,10 +1,13 @@
 ---
 # Disable all repositories
-- name: BASTION |configure_repos | Disable all repositories (RHN)
+- name: ANSIBLE | configure_repos | Disable all repositories (RHN)
   command: subscription-manager repos --disable="*"
+  when:
+    - use_satellite
+    - rhn_registration
 
 # Disable the AWS RHUI repositories
-- name: BASTION |configure_repos | Remove RHUI repositories
+- name: ANSIBLE | configure_repos | Remove RHUI repositories
   file:
     path: "{{ item }}"
     state: absent
@@ -13,12 +16,25 @@
     - /etc/yum.repos.d/redhat-rhui.repo
     - /etc/yum.repos.d/rhui-load-balancers.conf
   notify: yum-clean-all
+  when:
+    - use_satellite
+    - rhn_registration
 
-- name: BASTION |configure_repos | Enable the correct repos for Ansible
+- name: ANSIBLE | configure_repos | Enable the correct repos for Ansible
   command: subscription-manager repos  --enable rhel-7-server-ose-{{ ocp_version }}-rpms --enable rhel-7-server-rpms --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms
-  when: deploy_ansible
+  when:
+    - use_satellite
+    - rhn_registration
 
-- name: BASTION |configure_repos | Enable the Satellite Tools Repository when registered to Satellite server
+- name: ANSIBLE | configure_repos | Enable the Satellite Tools Repository when registered to Satellite server
   command: subscription-manager repos --enable rhel-7-server-satellite-tools-{{ satellite_version }}-rpms
   when: use_satellite
+
+- name: ANSIBLE | configure_repos | Add the public EPEL7 repository
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+  when:
+    - use_satellite == false
+    - rhn_registration == false
 

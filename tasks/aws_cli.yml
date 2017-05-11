@@ -1,36 +1,36 @@
 ---
-- name: BASTION | awscli | Install pip package if using pip for install
+- name: ANSIBLE | awscli | Install pip package if using pip for install
   yum:
     name: pip
     state: present
   when: awscli_pip
 
-- name: BASTION | awscli | Install AWS CLI tools (PIP)
+- name: ANSIBLE | awscli | Install AWS CLI tools (PIP)
   pip:
     name: awscli
     state: present
   when: awscli_pip
 
-- name: BASTION | awscli | Install AWS CLI (yum)
+- name: ANSIBLE | awscli | Install AWS CLI (yum)
   yum:
     name: awscli
     state: present
   when: awscli_yum
 
-- name: BASTION | awscli | Install AWS CLI tools (get-url)
+- name: ANSIBLE | awscli | Install AWS CLI tools (get-url)
   get_url:
     name: "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip"
     dest: /root/awscli-bundle.zip
   when: awscli_bundle
 
-- name: BASTION | awscli | Install AWS CLI tools (unzip)
+- name: ANSIBLE | awscli | Install AWS CLI tools (unzip)
   unarchive:
     src: /root/awscli-bundle.zip
     dest: /root/
     remote_src: True
   when: awscli_bundle
 
-- name: BASTION | awscli | Install AWS CLI tools (install)
+- name: ANSIBLE | awscli | Install AWS CLI tools (install)
   command: /root/awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
   when: awscli_bundle
 
