@@ -1,0 +1,10 @@
+---
+- name: yum-make-cache
+  yum:
+    make_cache: yes
+
+- name: yum-update-all
+  yum:
+    name: '*'
+    status: latest
+

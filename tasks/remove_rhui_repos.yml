@@ -1,0 +1,8 @@
+---
+- name: BASTION | remove aws rhui repos | Remove rhui files from /etc/yum.repos.d
+  file:
+    path: /etc/yum.repos.d/*rhui*.repo
+    state: absent
+  notitfy: yum-make-cache
+  when: remove_rhui_repos
+

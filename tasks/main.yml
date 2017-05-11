@@ -1,0 +1,10 @@
+---
+- include: remove_rhui_repos.yml
+  when: remove_rhui_repos
+- include: epel7.yml
+  when: add_epel_repo
+
+- include: install_packages.yml
+- include: ssh_config.yml
+
+- include: aws_cli.yml
