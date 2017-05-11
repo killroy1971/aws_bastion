@@ -1,5 +1,4 @@
 ---
-standalone_task: false
 remove_rhui_repos: false
 add_epel_repo: false
 awscli_pip: false
@@ -25,6 +24,4 @@ aws_user: ec2-user
 ssh_config_entries:
   - "*.aws-openshift.di2e.net"
   - "*.di2e.net"
-
-activation_key: bastion_key
 
